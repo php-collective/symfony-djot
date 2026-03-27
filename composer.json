@@ -27,6 +27,7 @@
         "symfony/validator": "^6.4 || ^7.0 || ^8.0"
     },
     "require-dev": {
+        "php-collective/coding-standard": "^1.0",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^11.5 || ^12.5 || ^13.0",
         "symfony/phpunit-bridge": "^6.4 || ^7.0 || ^8.0"
@@ -46,6 +47,8 @@
         "sort-packages": true
     },
     "scripts": {
+        "cs-check": "phpcs -p",
+        "cs-fix": "phpcbf -p",
         "stan": "phpstan analyse",
         "stan-setup": "composer require --dev phpstan/phpstan",
         "test": "phpunit"
