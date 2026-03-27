@@ -1,5 +1,9 @@
 # Symfony Djot Bundle
 
+[![CI](https://github.com/php-collective/symfony-djot/actions/workflows/ci.yml/badge.svg)](https://github.com/php-collective/symfony-djot/actions/workflows/ci.yml)
+[![PHP](https://img.shields.io/packagist/php-v/php-collective/symfony-djot)](https://packagist.org/packages/php-collective/symfony-djot)
+[![License](https://img.shields.io/packagist/l/php-collective/symfony-djot)](LICENSE)
+
 [Djot](https://github.com/php-collective/djot-php) markup language integration for Symfony — Twig filters, services, forms, and validation.
 
 ## Installation
