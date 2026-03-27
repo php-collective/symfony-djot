@@ -139,6 +139,10 @@ class ContentRenderer
 3. **Validate before storing** — safe mode helps, but validate input too
 4. **Review trusted content** — even "trusted" content should be reviewed
 
+## More Information
+
+For advanced safe mode options (custom blocked schemes, strict mode), see the [php-collective/djot safe mode documentation](https://php-collective.github.io/djot-php/guide/safe-mode).
+
 ## Next Steps
 
 - [Configuration](configuration.md) — set up profiles
