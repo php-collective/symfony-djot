@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PhpCollective\SymfonyDjot\Tests\DependencyInjection;
 
+use Djot\Extension\WikilinksExtension;
 use PhpCollective\SymfonyDjot\DependencyInjection\SymfonyDjotExtension;
-use PhpCollective\SymfonyDjot\Service\DjotConverter;
 use PhpCollective\SymfonyDjot\Service\DjotConverterInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class SymfonyDjotExtensionTest extends TestCase
 {
@@ -69,8 +70,8 @@ class SymfonyDjotExtensionTest extends TestCase
         $definition = $container->getDefinition('symfony_djot.converter.default');
         $cacheRef = $definition->getArgument('$cache');
         $this->assertNotNull($cacheRef);
-        $this->assertInstanceOf(\Symfony\Component\DependencyInjection\Reference::class, $cacheRef);
-        $this->assertSame('cache.app', (string) $cacheRef);
+        $this->assertInstanceOf(Reference::class, $cacheRef);
+        $this->assertSame('cache.app', (string)$cacheRef);
     }
 
     public function testTwigExtensionIsRegistered(): void
@@ -381,7 +382,7 @@ class SymfonyDjotExtensionTest extends TestCase
             'wiki-link',
         );
 
-        $this->assertInstanceOf(\Djot\Extension\WikilinksExtension::class, $extension);
+        $this->assertInstanceOf(WikilinksExtension::class, $extension);
     }
 
     /**

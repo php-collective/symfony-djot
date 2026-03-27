@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpCollective\SymfonyDjot\DependencyInjection;
 
 use Djot\Extension\AutolinkExtension;
+use Djot\Extension\CodeGroupExtension;
 use Djot\Extension\DefaultAttributesExtension;
 use Djot\Extension\ExternalLinksExtension;
 use Djot\Extension\FrontmatterExtension;
@@ -91,6 +92,7 @@ class SymfonyDjotExtension extends Extension
 
         return match ($type) {
             'autolink' => $this->createAutolinkExtension($config),
+            'code_group' => $this->createCodeGroupExtension($config),
             'default_attributes' => $this->createDefaultAttributesExtension($config),
             'external_links' => $this->createExternalLinksExtension($config),
             'frontmatter' => $this->createFrontmatterExtension($config),
@@ -113,6 +115,32 @@ class SymfonyDjotExtension extends Extension
 
         if (!empty($config['allowed_schemes'])) {
             $definition->setArgument('$allowedSchemes', $config['allowed_schemes']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createCodeGroupExtension(array $config): Definition
+    {
+        $definition = new Definition(CodeGroupExtension::class);
+
+        if (isset($config['wrapper_class'])) {
+            $definition->setArgument('$wrapperClass', $config['wrapper_class']);
+        }
+        if (isset($config['panel_class'])) {
+            $definition->setArgument('$panelClass', $config['panel_class']);
+        }
+        if (isset($config['label_class'])) {
+            $definition->setArgument('$labelClass', $config['label_class']);
+        }
+        if (isset($config['radio_class'])) {
+            $definition->setArgument('$radioClass', $config['radio_class']);
+        }
+        if (isset($config['id_prefix'])) {
+            $definition->setArgument('$idPrefix', $config['id_prefix']);
         }
 
         return $definition;
