@@ -1,6 +1,6 @@
 # Symfony Djot Bundle
 
-Djot markup language integration for Symfony — Twig filters, services, forms, and validation.
+Djot markup language integration for Symfony — Twig filters, services, and caching.
 
 ## Installation
 
@@ -79,9 +79,25 @@ symfony_djot:
             safe_mode: true
 ```
 
+## Documentation
+
+See the [docs/](docs/) folder for detailed documentation:
+
+- [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
+- [Twig Usage](docs/twig-usage.md)
+- [Service Usage](docs/service-usage.md)
+- [Safe Mode](docs/safe-mode.md)
+- [Caching](docs/caching.md)
+- [Djot Syntax](docs/djot-syntax.md)
+
 ## What is Djot?
 
 [Djot](https://djot.net) is a modern light markup language created by John MacFarlane (author of CommonMark/Pandoc). It offers cleaner syntax and more features than Markdown while being easier to parse.
 
 Learn more about Djot syntax at [djot.net](https://djot.net).
+
+## License
+
+MIT
 
