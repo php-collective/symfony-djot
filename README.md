@@ -1,6 +1,6 @@
 # Symfony Djot Bundle
 
-Djot markup language integration for Symfony — Twig filters, services, forms, and validation.
+[Djot](https://github.com/php-collective/djot-php) markup language integration for Symfony — Twig filters, services, forms, and validation.
 
 ## Installation
 
@@ -122,8 +122,3 @@ See the [docs/](docs/) folder for detailed documentation:
 [Djot](https://djot.net) is a modern light markup language created by John MacFarlane (author of CommonMark/Pandoc). It offers cleaner syntax and more features than Markdown while being easier to parse.
 
 Learn more about Djot syntax at [djot.net](https://djot.net).
-
-## License
-
-MIT
-
