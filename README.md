@@ -1,6 +1,6 @@
 # Symfony Djot Bundle
 
-Djot markup language integration for Symfony — Twig filters, services, and caching.
+Djot markup language integration for Symfony — Twig filters, services, forms, and validation.
 
 ## Installation
 
@@ -79,6 +79,30 @@ symfony_djot:
             safe_mode: true
 ```
 
+### Form Type
+
+Use the `DjotType` for form fields that accept Djot markup:
+
+```php
+use PhpCollective\SymfonyDjot\Form\Type\DjotType;
+
+$builder->add('body', DjotType::class);
+```
+
+### Validation
+
+Validate that a field contains valid Djot markup:
+
+```php
+use PhpCollective\SymfonyDjot\Validator\Constraints\ValidDjot;
+
+class Article
+{
+    #[ValidDjot]
+    private string $body;
+}
+```
+
 ## Documentation
 
 See the [docs/](docs/) folder for detailed documentation:
@@ -87,6 +111,8 @@ See the [docs/](docs/) folder for detailed documentation:
 - [Configuration](docs/configuration.md)
 - [Twig Usage](docs/twig-usage.md)
 - [Service Usage](docs/service-usage.md)
+- [Forms](docs/forms.md)
+- [Validation](docs/validation.md)
 - [Safe Mode](docs/safe-mode.md)
 - [Caching](docs/caching.md)
 - [Djot Syntax](docs/djot-syntax.md)

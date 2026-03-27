@@ -21,12 +21,14 @@
     "require": {
         "php": "^8.2",
         "php-collective/djot": "^0.1",
+        "symfony/form": "^6.4 || ^7.0",
         "symfony/framework-bundle": "^6.4 || ^7.0",
-        "symfony/twig-bundle": "^6.4 || ^7.0"
+        "symfony/twig-bundle": "^6.4 || ^7.0",
+        "symfony/validator": "^6.4 || ^7.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
-        "phpunit/phpunit": "^11.0",
+        "phpunit/phpunit": "^11.5 || ^12.5 || ^13.0",
         "symfony/phpunit-bridge": "^6.4 || ^7.0"
     },
     "minimum-stability": "stable",

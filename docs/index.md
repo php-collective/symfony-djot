@@ -17,6 +17,8 @@ This bundle provides:
 
 - **Twig integration** — `|djot` filter and `djot()` function
 - **Service injection** — `DjotConverterInterface` for use in controllers and services
+- **Form type** — `DjotType` for form fields
+- **Validation** — `ValidDjot` constraint for input validation
 - **Multiple profiles** — different configurations for different contexts (e.g., user content vs. admin content)
 - **Safe mode** — XSS protection for untrusted input
 - **Caching** — optional caching of rendered output via Symfony cache pools
@@ -51,6 +53,8 @@ public function render(string $content): string
 - [Configuration](configuration.md)
 - [Twig Usage](twig-usage.md)
 - [Service Usage](service-usage.md)
+- [Forms](forms.md)
+- [Validation](validation.md)
 - [Safe Mode](safe-mode.md)
 - [Caching](caching.md)
 - [Djot Syntax](djot-syntax.md)

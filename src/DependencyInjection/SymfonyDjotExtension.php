@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PhpCollective\SymfonyDjot\DependencyInjection;
 
+use PhpCollective\SymfonyDjot\Form\Type\DjotType;
 use PhpCollective\SymfonyDjot\Service\DjotConverter;
 use PhpCollective\SymfonyDjot\Service\DjotConverterInterface;
 use PhpCollective\SymfonyDjot\Twig\DjotExtension;
+use PhpCollective\SymfonyDjot\Validator\Constraints\ValidDjotValidator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -46,5 +48,13 @@ class SymfonyDjotExtension extends Extension
         $twigExtension->setArgument('$converters', $converterReferences);
         $twigExtension->addTag('twig.extension');
         $container->setDefinition('symfony_djot.twig_extension', $twigExtension);
+
+        $formType = new Definition(DjotType::class);
+        $formType->addTag('form.type');
+        $container->setDefinition('symfony_djot.form.type.djot', $formType);
+
+        $validator = new Definition(ValidDjotValidator::class);
+        $validator->addTag('validator.constraint_validator');
+        $container->setDefinition('symfony_djot.validator.valid_djot', $validator);
     }
 }

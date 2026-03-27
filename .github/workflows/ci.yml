@@ -41,7 +41,7 @@ jobs:
 
       - name: Install Symfony ${{ matrix.symfony }}
         run: |
-          composer require symfony/framework-bundle:${{ matrix.symfony }} symfony/twig-bundle:${{ matrix.symfony }} --no-update
+          composer require symfony/framework-bundle:${{ matrix.symfony }} symfony/twig-bundle:${{ matrix.symfony }} symfony/form:${{ matrix.symfony }} symfony/validator:${{ matrix.symfony }} --no-update
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
