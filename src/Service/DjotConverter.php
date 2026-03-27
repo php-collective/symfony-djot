@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PhpCollective\SymfonyDjot\Service;
 
 use Djot\DjotConverter as BaseDjotConverter;
-use Djot\Extension\ExtensionInterface;
 use Djot\Node\Document;
 use Djot\Renderer\PlainTextRenderer;
 use Psr\Cache\CacheItemPoolInterface;
@@ -17,7 +16,9 @@ class DjotConverter implements DjotConverterInterface
     private PlainTextRenderer $textRenderer;
 
     /**
-     * @param array<ExtensionInterface> $extensions
+     * @param bool $safeMode
+     * @param \Psr\Cache\CacheItemPoolInterface|null $cache
+     * @param array<\Djot\Extension\ExtensionInterface> $extensions
      */
     public function __construct(
         bool $safeMode = false,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpCollective\SymfonyDjot\Tests\Twig;
 
+use InvalidArgumentException;
 use PhpCollective\SymfonyDjot\Service\DjotConverter;
 use PhpCollective\SymfonyDjot\Twig\DjotExtension;
 use PHPUnit\Framework\TestCase;
@@ -61,7 +62,7 @@ class DjotExtensionTest extends TestCase
 
     public function testInvalidConverter(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Djot converter "invalid" not found');
 
         $this->extension->toHtml('test', 'invalid');

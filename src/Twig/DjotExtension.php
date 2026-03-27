@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpCollective\SymfonyDjot\Twig;
 
+use InvalidArgumentException;
 use PhpCollective\SymfonyDjot\Service\DjotConverterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -12,15 +13,14 @@ use Twig\TwigFunction;
 class DjotExtension extends AbstractExtension
 {
     /**
-     * @param array<string, DjotConverterInterface> $converters
+     * @param array<string, \PhpCollective\SymfonyDjot\Service\DjotConverterInterface> $converters
      */
-    public function __construct(
-        private array $converters,
-    ) {
+    public function __construct(private array $converters)
+    {
     }
 
     /**
-     * @return array<TwigFilter>
+     * @return array<\Twig\TwigFilter>
      */
     public function getFilters(): array
     {
@@ -31,7 +31,7 @@ class DjotExtension extends AbstractExtension
     }
 
     /**
-     * @return array<TwigFunction>
+     * @return array<\Twig\TwigFunction>
      */
     public function getFunctions(): array
     {
@@ -54,7 +54,7 @@ class DjotExtension extends AbstractExtension
     private function getConverter(string $name): DjotConverterInterface
     {
         if (!isset($this->converters[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Djot converter "%s" not found. Available converters: %s',
                 $name,
                 implode(', ', array_keys($this->converters)),

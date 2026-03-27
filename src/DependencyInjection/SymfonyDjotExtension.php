@@ -285,9 +285,9 @@ class SymfonyDjotExtension extends Extension
     {
         $urlGenerator = static function (string $page) use ($template): string {
             $slug = strtolower(trim($page));
-            $slug = (string) preg_replace('/\s+/', '-', $slug);
-            $slug = (string) preg_replace('/[^a-z0-9\-_\/]/', '', $slug);
-            $slug = (string) preg_replace('/-+/', '-', $slug);
+            $slug = (string)preg_replace('/\s+/', '-', $slug);
+            $slug = (string)preg_replace('/[^a-z0-9\-_\/]/', '', $slug);
+            $slug = (string)preg_replace('/-+/', '-', $slug);
 
             return str_replace('{page}', $slug, $template);
         };

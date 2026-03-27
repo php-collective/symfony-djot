@@ -27,7 +27,7 @@
         "symfony/validator": "^6.4 || ^7.0 || ^8.0"
     },
     "require-dev": {
-        "php-collective/coding-standard": "^1.0",
+        "php-collective/code-sniffer": "dev-master",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^11.5 || ^12.5 || ^13.0",
         "symfony/phpunit-bridge": "^6.4 || ^7.0 || ^8.0"
@@ -44,6 +44,9 @@
         }
     },
     "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
         "sort-packages": true
     },
     "scripts": {

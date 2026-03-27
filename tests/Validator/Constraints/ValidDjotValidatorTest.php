@@ -6,7 +6,6 @@ namespace PhpCollective\SymfonyDjot\Tests\Validator\Constraints;
 
 use PhpCollective\SymfonyDjot\Validator\Constraints\ValidDjot;
 use PhpCollective\SymfonyDjot\Validator\Constraints\ValidDjotValidator;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -15,10 +14,14 @@ class ValidDjotValidatorTest extends TestCase
 {
     private ValidDjotValidator $validator;
 
-    /** @var ExecutionContextInterface&MockObject */
+    /**
+     * @var \Symfony\Component\Validator\Context\ExecutionContextInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     private ExecutionContextInterface $context;
 
-    /** @var ConstraintViolationBuilderInterface&MockObject */
+    /**
+     * @var \Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     private ConstraintViolationBuilderInterface $violationBuilder;
 
     protected function setUp(): void
