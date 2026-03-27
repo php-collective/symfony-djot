@@ -79,6 +79,41 @@ symfony_djot:
             safe_mode: true
 ```
 
+### Extensions
+
+Enable [djot-php extensions](https://github.com/php-collective/djot-php) per converter:
+
+```yaml
+symfony_djot:
+    converters:
+        default:
+            extensions:
+                - type: autolink
+                - type: smart_quotes
+                - type: heading_permalinks
+                  symbol: '#'
+                  position: after
+        with_mentions:
+            extensions:
+                - type: mentions
+                  user_url_template: 'https://github.com/{username}'
+                - type: table_of_contents
+```
+
+Available extensions:
+- `autolink` - Auto-convert URLs to clickable links
+- `default_attributes` - Add default attributes to elements by type
+- `external_links` - Configure external link behavior (target, rel)
+- `frontmatter` - Parse YAML/TOML/JSON frontmatter blocks
+- `heading_permalinks` - Add anchor links to headings
+- `mentions` - Convert @username to profile links
+- `semantic_span` - Convert spans to `<kbd>`, `<dfn>`, `<abbr>` elements
+- `smart_quotes` - Convert straight quotes to typographic quotes
+- `table_of_contents` - Generate TOC from headings
+- `wikilinks` - Support `[[Page Name]]` wiki-style links
+
+See [Extensions documentation](docs/extensions.md) for detailed configuration options.
+
 ### Form Type
 
 Use the `DjotType` for form fields that accept Djot markup:
@@ -114,6 +149,7 @@ See the [docs/](docs/) folder for detailed documentation:
 - [Forms](docs/forms.md)
 - [Validation](docs/validation.md)
 - [Safe Mode](docs/safe-mode.md)
+- [Extensions](docs/extensions.md)
 - [Caching](docs/caching.md)
 - [Djot Syntax](docs/djot-syntax.md)
 
