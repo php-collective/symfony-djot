@@ -15,6 +15,33 @@ symfony_djot:
 
 ## Available Extensions
 
+### admonition
+
+Creates styled admonition blocks (callouts) for notes, warnings, tips, etc.
+
+```yaml
+extensions:
+    - type: admonition
+      types: ['note', 'tip', 'warning', 'danger', 'info', 'success']  # Types to recognize
+      default_title: true            # Auto-generate title from type
+      title_tag: p                   # HTML tag for title
+      title_class: admonition-title  # CSS class for title
+      container_class: admonition    # CSS class for container
+      icons: true                    # Enable default icons (or custom array)
+      icon_class: admonition-icon    # CSS class for icon wrapper
+```
+
+Usage in Djot:
+```
+::: note
+This is a note.
+:::
+
+::: warning Custom Title
+This is a warning with a custom title.
+:::
+```
+
 ### autolink
 
 Automatically converts bare URLs and email addresses to clickable links.
@@ -96,6 +123,16 @@ extensions:
       render_as_comment: true    # Render as HTML comment
 ```
 
+### heading_level_shift
+
+Shifts all heading levels by a specified amount. Useful when embedding content.
+
+```yaml
+extensions:
+    - type: heading_level_shift
+      shift: 1    # Number of levels to shift (1-5)
+```
+
 ### heading_permalinks
 
 Adds anchor links to headings for easy linking.
@@ -109,6 +146,31 @@ extensions:
       aria_label: 'Permalink'  # Aria label for accessibility
 ```
 
+### heading_reference
+
+Creates links to headings using `[text](#heading-id)` syntax.
+
+```yaml
+extensions:
+    - type: heading_reference
+      css_class: heading-ref    # CSS class for reference links
+```
+
+### inline_footnotes
+
+Converts spans with a specific class to inline footnotes.
+
+```yaml
+extensions:
+    - type: inline_footnotes
+      css_class: fn    # CSS class that marks inline footnotes
+```
+
+Usage in Djot:
+```
+Some text[^This is an inline footnote.]{.fn}
+```
+
 ### mentions
 
 Converts @username references to profile links.
@@ -119,6 +181,27 @@ extensions:
       user_url_template: 'https://github.com/{username}'
       user_class: mention
 ```
+
+### mermaid
+
+Renders code blocks with `mermaid` language as Mermaid diagrams.
+
+```yaml
+extensions:
+    - type: mermaid
+      tag: pre                    # HTML tag (pre or div)
+      css_class: mermaid          # CSS class for Mermaid.js detection
+      wrap_in_figure: false       # Wrap in figure element
+      figure_class: mermaid-figure  # CSS class for figure
+```
+
+Usage in Djot:
+~~~
+``` mermaid
+graph TD
+    A[Start] --> B[End]
+```
+~~~
 
 ### semantic_span
 
@@ -156,6 +239,36 @@ extensions:
       min_level: 1      # Minimum heading level
       max_level: 6      # Maximum heading level
       toc_class: toc    # CSS class for the TOC container
+```
+
+### tabs
+
+Creates tabbed content blocks. Supports CSS-only or ARIA modes.
+
+```yaml
+extensions:
+    - type: tabs
+      mode: css               # Output mode: 'css' or 'aria'
+      wrapper_class: tabs     # CSS class for container
+      tab_class: tabs-panel   # CSS class for panels
+      label_class: tabs-label # CSS class for labels
+      radio_class: tabs-radio # CSS class for radio inputs (CSS mode)
+      id_prefix: tabset       # Prefix for generated IDs
+```
+
+Usage in Djot:
+```
+::: tabs
+
+::: tab First
+Content for the first tab.
+:::
+
+::: tab Second
+Content for the second tab.
+:::
+
+:::
 ```
 
 ### wikilinks

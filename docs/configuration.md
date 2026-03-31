@@ -11,7 +11,10 @@ The bundle works out of the box with sensible defaults. No configuration is requ
 symfony_djot:
     converters:
         default:
-            safe_mode: false    # Enable XSS protection
+            safe_mode: false           # Enable XSS protection
+            significant_newlines: false # Treat line breaks as significant
+            soft_break_mode: null       # How to render soft breaks: newline, space, br
+            xhtml: false               # Output XHTML-compatible markup
 
         # Add custom profiles as needed
         user_content:
@@ -21,6 +24,15 @@ symfony_djot:
         enabled: false          # Enable output caching
         pool: cache.app         # Symfony cache pool to use
 ```
+
+## Converter Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `safe_mode` | bool | `false` | Enable XSS protection for untrusted input |
+| `significant_newlines` | bool | `false` | Allow blocks to interrupt paragraphs without blank lines (markdown-like behavior) |
+| `soft_break_mode` | string | `null` | How to render soft breaks: `newline`, `space`, or `br` |
+| `xhtml` | bool | `false` | Output XHTML-compatible markup (self-closing tags) |
 
 ## Converter Profiles
 

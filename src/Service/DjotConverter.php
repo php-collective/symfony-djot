@@ -7,6 +7,7 @@ namespace PhpCollective\SymfonyDjot\Service;
 use Djot\DjotConverter as BaseDjotConverter;
 use Djot\Node\Document;
 use Djot\Renderer\PlainTextRenderer;
+use Djot\Renderer\SoftBreakMode;
 use Psr\Cache\CacheItemPoolInterface;
 
 class DjotConverter implements DjotConverterInterface
@@ -17,16 +18,25 @@ class DjotConverter implements DjotConverterInterface
 
     /**
      * @param bool $safeMode
+     * @param bool $significantNewlines
+     * @param string|null $softBreakMode
+     * @param bool $xhtml
      * @param \Psr\Cache\CacheItemPoolInterface|null $cache
      * @param array<\Djot\Extension\ExtensionInterface> $extensions
      */
     public function __construct(
         bool $safeMode = false,
+        bool $significantNewlines = false,
+        ?string $softBreakMode = null,
+        bool $xhtml = false,
         private ?CacheItemPoolInterface $cache = null,
         array $extensions = [],
     ) {
         $this->converter = new BaseDjotConverter(
+            xhtml: $xhtml,
             safeMode: $safeMode,
+            significantNewlines: $significantNewlines,
+            softBreakMode: $softBreakMode !== null ? SoftBreakMode::from($softBreakMode) : null,
         );
         $this->textRenderer = new PlainTextRenderer();
 

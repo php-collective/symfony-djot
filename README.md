@@ -105,16 +105,22 @@ symfony_djot:
 ```
 
 Available extensions:
+- `admonition` - Admonition blocks (note, tip, warning, danger, etc.)
 - `autolink` - Auto-convert URLs to clickable links
 - `code_group` - Transform code-group divs into tabbed interfaces
 - `default_attributes` - Add default attributes to elements by type
 - `external_links` - Configure external link behavior (target, rel)
 - `frontmatter` - Parse YAML/TOML/JSON frontmatter blocks
+- `heading_level_shift` - Shift heading levels up/down
 - `heading_permalinks` - Add anchor links to headings
+- `heading_reference` - Link to headings with `[text](#heading)` syntax
+- `inline_footnotes` - Convert spans with class to inline footnotes
 - `mentions` - Convert @username to profile links
+- `mermaid` - Render Mermaid diagram code blocks
 - `semantic_span` - Convert spans to `<kbd>`, `<dfn>`, `<abbr>` elements
 - `smart_quotes` - Convert straight quotes to typographic quotes
 - `table_of_contents` - Generate TOC from headings
+- `tabs` - Tabbed content blocks (CSS or ARIA mode)
 - `wikilinks` - Support `[[Page Name]]` wiki-style links
 
 See [Extensions documentation](docs/extensions.md) for detailed configuration options.

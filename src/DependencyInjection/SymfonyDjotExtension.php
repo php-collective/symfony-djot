@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace PhpCollective\SymfonyDjot\DependencyInjection;
 
+use Djot\Extension\AdmonitionExtension;
 use Djot\Extension\AutolinkExtension;
 use Djot\Extension\CodeGroupExtension;
 use Djot\Extension\DefaultAttributesExtension;
 use Djot\Extension\ExternalLinksExtension;
 use Djot\Extension\FrontmatterExtension;
+use Djot\Extension\HeadingLevelShiftExtension;
 use Djot\Extension\HeadingPermalinksExtension;
+use Djot\Extension\HeadingReferenceExtension;
+use Djot\Extension\InlineFootnotesExtension;
 use Djot\Extension\MentionsExtension;
+use Djot\Extension\MermaidExtension;
 use Djot\Extension\SemanticSpanExtension;
 use Djot\Extension\SmartQuotesExtension;
 use Djot\Extension\TableOfContentsExtension;
+use Djot\Extension\TabsExtension;
 use Djot\Extension\WikilinksExtension;
 use PhpCollective\SymfonyDjot\Form\Type\DjotType;
 use PhpCollective\SymfonyDjot\Service\DjotConverter;
@@ -51,6 +57,9 @@ class SymfonyDjotExtension extends Extension
 
             $definition = new Definition(DjotConverter::class);
             $definition->setArgument('$safeMode', $converterConfig['safe_mode']);
+            $definition->setArgument('$significantNewlines', $converterConfig['significant_newlines'] ?? false);
+            $definition->setArgument('$softBreakMode', $converterConfig['soft_break_mode'] ?? null);
+            $definition->setArgument('$xhtml', $converterConfig['xhtml'] ?? false);
 
             if ($config['cache']['enabled']) {
                 $definition->setArgument('$cache', new Reference($config['cache']['pool']));
@@ -91,16 +100,22 @@ class SymfonyDjotExtension extends Extension
         $type = $config['type'] ?? null;
 
         return match ($type) {
+            'admonition' => $this->createAdmonitionExtension($config),
             'autolink' => $this->createAutolinkExtension($config),
             'code_group' => $this->createCodeGroupExtension($config),
             'default_attributes' => $this->createDefaultAttributesExtension($config),
             'external_links' => $this->createExternalLinksExtension($config),
             'frontmatter' => $this->createFrontmatterExtension($config),
+            'heading_level_shift' => $this->createHeadingLevelShiftExtension($config),
             'heading_permalinks' => $this->createHeadingPermalinksExtension($config),
+            'heading_reference' => $this->createHeadingReferenceExtension($config),
+            'inline_footnotes' => $this->createInlineFootnotesExtension($config),
             'mentions' => $this->createMentionsExtension($config),
+            'mermaid' => $this->createMermaidExtension($config),
             'semantic_span' => $this->createSemanticSpanExtension(),
             'smart_quotes' => $this->createSmartQuotesExtension($config),
             'table_of_contents' => $this->createTableOfContentsExtension($config),
+            'tabs' => $this->createTabsExtension($config),
             'wikilinks' => $this->createWikilinksExtension($config),
             default => null,
         };
@@ -301,6 +316,132 @@ class SymfonyDjotExtension extends Extension
             if (isset($config['link_class'])) {
                 $definition->setArgument('$cssClass', $config['link_class']);
             }
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createAdmonitionExtension(array $config): Definition
+    {
+        $definition = new Definition(AdmonitionExtension::class);
+
+        if (isset($config['types'])) {
+            $definition->setArgument('$types', $config['types']);
+        }
+        if (isset($config['default_title'])) {
+            $definition->setArgument('$defaultTitle', $config['default_title']);
+        }
+        if (isset($config['title_tag'])) {
+            $definition->setArgument('$titleTag', $config['title_tag']);
+        }
+        if (isset($config['title_class'])) {
+            $definition->setArgument('$titleClass', $config['title_class']);
+        }
+        if (isset($config['container_class'])) {
+            $definition->setArgument('$containerClass', $config['container_class']);
+        }
+        if (isset($config['icons'])) {
+            $definition->setArgument('$icons', $config['icons']);
+        }
+        if (isset($config['icon_class'])) {
+            $definition->setArgument('$iconClass', $config['icon_class']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createHeadingLevelShiftExtension(array $config): Definition
+    {
+        $definition = new Definition(HeadingLevelShiftExtension::class);
+
+        if (isset($config['shift'])) {
+            $definition->setArgument('$shift', $config['shift']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createHeadingReferenceExtension(array $config): Definition
+    {
+        $definition = new Definition(HeadingReferenceExtension::class);
+
+        if (isset($config['css_class'])) {
+            $definition->setArgument('$cssClass', $config['css_class']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createInlineFootnotesExtension(array $config): Definition
+    {
+        $definition = new Definition(InlineFootnotesExtension::class);
+
+        if (isset($config['css_class'])) {
+            $definition->setArgument('$cssClass', $config['css_class']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createMermaidExtension(array $config): Definition
+    {
+        $definition = new Definition(MermaidExtension::class);
+
+        if (isset($config['tag'])) {
+            $definition->setArgument('$tag', $config['tag']);
+        }
+        if (isset($config['css_class'])) {
+            $definition->setArgument('$cssClass', $config['css_class']);
+        }
+        if (isset($config['wrap_in_figure'])) {
+            $definition->setArgument('$wrapInFigure', $config['wrap_in_figure']);
+        }
+        if (isset($config['figure_class'])) {
+            $definition->setArgument('$figureClass', $config['figure_class']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function createTabsExtension(array $config): Definition
+    {
+        $definition = new Definition(TabsExtension::class);
+
+        if (isset($config['mode'])) {
+            $definition->setArgument('$mode', $config['mode']);
+        }
+        if (isset($config['wrapper_class'])) {
+            $definition->setArgument('$wrapperClass', $config['wrapper_class']);
+        }
+        if (isset($config['tab_class'])) {
+            $definition->setArgument('$tabClass', $config['tab_class']);
+        }
+        if (isset($config['label_class'])) {
+            $definition->setArgument('$labelClass', $config['label_class']);
+        }
+        if (isset($config['radio_class'])) {
+            $definition->setArgument('$radioClass', $config['radio_class']);
+        }
+        if (isset($config['id_prefix'])) {
+            $definition->setArgument('$idPrefix', $config['id_prefix']);
         }
 
         return $definition;
