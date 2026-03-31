@@ -106,6 +106,7 @@ symfony_djot:
 
 Available extensions:
 - `autolink` - Auto-convert URLs to clickable links
+- `code_group` - Transform code-group divs into tabbed interfaces
 - `default_attributes` - Add default attributes to elements by type
 - `external_links` - Configure external link behavior (target, rel)
 - `frontmatter` - Parse YAML/TOML/JSON frontmatter blocks

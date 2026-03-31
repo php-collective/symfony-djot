@@ -25,6 +25,36 @@ extensions:
       allowed_schemes: ['https', 'http', 'mailto']  # Optional
 ```
 
+### code_group
+
+Transforms code-group divs into tabbed code block interfaces. Labels are extracted from the language hint using `[Label]` suffix syntax.
+
+```yaml
+extensions:
+    - type: code_group
+      wrapper_class: code-group      # CSS class for container
+      panel_class: code-group-panel  # CSS class for panels
+      label_class: code-group-label  # CSS class for tab labels
+      radio_class: code-group-radio  # CSS class for radio inputs
+      id_prefix: codegroup           # Prefix for generated IDs
+```
+
+Usage in Djot:
+
+~~~
+::: code-group
+
+``` php [PHP]
+echo "Hello";
+```
+
+``` js [JavaScript]
+console.log("Hello");
+```
+
+:::
+~~~
+
 ### default_attributes
 
 Adds default attributes to elements by type.
