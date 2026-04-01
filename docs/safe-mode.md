@@ -1,64 +1,39 @@
 # Safe Mode
 
-Safe mode provides XSS protection when rendering untrusted content such as user comments, forum posts, or any input from external sources.
+Safe mode is *enabled by default* to provide XSS protection. This protects against malicious content in user comments, forum posts, or any input from external sources.
 
-## When to Use Safe Mode
+## Default Behavior
 
-| Content Source | Safe Mode |
-|---------------|-----------|
-| Admin/editor content | Off |
-| User comments | **On** |
-| Forum posts | **On** |
-| External API data | **On** |
-| CMS content (trusted editors) | Off |
-| User profile descriptions | **On** |
-| Email from users | **On** |
-
-**Rule of thumb:** If you don't fully control the content, enable safe mode.
-
-## Configuration
-
-### Global Profile
-
-```yaml
-# config/packages/symfony_djot.yaml
-symfony_djot:
-    converters:
-        user_content:
-            safe_mode: true
-```
-
-### In Twig
+The `|djot` filter uses safe mode by default. For trusted content (admin/CMS), use `|djot_raw` or a named converter with `safe_mode: false`.
 
 ```twig
-{# SAFE: Uses safe mode profile #}
-{{ comment.text|djot('user_content') }}
+{# Safe by default - use for any content #}
+{{ content|djot }}
 
-{# UNSAFE: Don't do this with user content! #}
-{{ comment.text|djot }}
+{# Explicit raw - only for trusted content you control #}
+{{ article.body|djot_raw }}
 ```
 
-### In Services
+## When to Disable Safe Mode
 
-```php
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+| Content Source | Filter to Use |
+|---------------|---------------|
+| User comments | `|djot` (default) |
+| Forum posts | `|djot` (default) |
+| External API data | `|djot` (default) |
+| User profile descriptions | `|djot` (default) |
+| Admin/editor content | `|djot_raw` or named converter |
+| CMS content (trusted editors) | `|djot_raw` or named converter |
 
-class CommentService
-{
-    public function __construct(
-        #[Autowire(service: 'symfony_djot.converter.user_content')]
-        private DjotConverterInterface $djot,
-    ) {}
-}
-```
+**Rule of thumb:** Only use `|djot_raw` when you fully control and trust the content or sanitized the possible HTML content using e.g. HTMLPurifier.
 
 ## What Safe Mode Does
 
-When enabled, safe mode:
+When enabled (the default), safe mode:
 
-1. **Sanitizes URLs** — blocks `javascript:`, `data:`, and other dangerous protocols
-2. **Removes raw HTML** — strips any embedded HTML/scripts
-3. **Validates links** — ensures URLs are safe
+1. **Sanitizes URLs** - blocks `javascript:`, `data:`, and other dangerous protocols
+2. **Removes raw HTML** - strips any embedded HTML/scripts
+3. **Validates links** - ensures URLs are safe
 
 ### Example: Dangerous Link
 
@@ -67,14 +42,14 @@ Input:
 [Click me](javascript:alert('XSS'))
 ```
 
-Without safe mode:
-```html
-<p><a href="javascript:alert('XSS')">Click me</a></p>
-```
-
-With safe mode:
+With `|djot` (safe mode, default):
 ```html
 <p><a href="">Click me</a></p>
+```
+
+With `|djot_raw` (no safe mode):
+```html
+<p><a href="javascript:alert('XSS')">Click me</a></p>
 ```
 
 ### Example: Raw HTML
@@ -84,60 +59,81 @@ Input:
 `<script>alert('XSS')</script>`{=html}
 ```
 
-Without safe mode: Script is rendered.
+With `|djot` (safe mode): Raw HTML blocks are stripped.
 
-With safe mode: Raw HTML blocks are stripped.
+With `|djot_raw` (no safe mode): Script is rendered.
 
-## Multiple Profiles Pattern
+## Using Named Converters
 
-A common pattern is to have both safe and unsafe profiles:
+For more control, define named converter profiles:
 
 ```yaml
+# config/packages/symfony_djot.yaml
 symfony_djot:
     converters:
-        # For trusted content (admin, editors)
-        default:
+        # Default is already safe (safe_mode: true)
+        default: ~
+
+        # For trusted CMS content
+        trusted:
             safe_mode: false
 
-        # For user-generated content
-        user_content:
-            safe_mode: true
-
-        # For email content (extra careful)
-        email:
-            safe_mode: true
+        # With extensions for documentation
+        docs:
+            safe_mode: false
+            extensions:
+                - table_of_contents
+                - heading_permalinks
 ```
 
+```twig
+{# Uses default safe converter #}
+{{ comment.text|djot }}
+
+{# Uses trusted converter #}
+{{ article.body|djot('trusted') }}
+
+{# Uses docs converter with extensions #}
+{{ documentation.content|djot('docs') }}
+```
+
+### In Services
+
 ```php
+use PhpCollective\SymfonyDjot\Service\DjotConverterInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
 class ContentRenderer
 {
     public function __construct(
+        // Default converter (safe mode)
         private DjotConverterInterface $default,
 
-        #[Autowire(service: 'symfony_djot.converter.user_content')]
-        private DjotConverterInterface $userContent,
+        // Trusted converter (no safe mode)
+        #[Autowire(service: 'symfony_djot.converter.trusted')]
+        private DjotConverterInterface $trusted,
     ) {}
+
+    public function renderComment(Comment $comment): string
+    {
+        // User-generated content - use safe default
+        return $this->default->toHtml($comment->getText());
+    }
 
     public function renderArticle(Article $article): string
     {
         // Trusted content from editors
-        return $this->default->toHtml($article->getBody());
-    }
-
-    public function renderComment(Comment $comment): string
-    {
-        // User-generated, needs protection
-        return $this->userContent->toHtml($comment->getText());
+        return $this->trusted->toHtml($article->getBody());
     }
 }
 ```
 
 ## Security Recommendations
 
-1. **Default to safe** — when in doubt, use safe mode
-2. **Separate profiles** — don't mix trusted and untrusted content
-3. **Validate before storing** — safe mode helps, but validate input too
-4. **Review trusted content** — even "trusted" content should be reviewed
+1. **Use the default** - `|djot` is safe by default, use it everywhere
+2. **Explicit trust** - only use `|djot_raw` for content you control
+3. **Validate before storing** - safe mode helps at render time, but validate input too
+4. **Review trusted content** - even "trusted" content should be reviewed
 
 ## More Information
 
@@ -145,5 +141,5 @@ For advanced safe mode options (custom blocked schemes, strict mode), see the [p
 
 ## Next Steps
 
-- [Configuration](configuration.md) — set up profiles
-- [Service Usage](service-usage.md) — use in PHP code
+- [Configuration](configuration.md) - set up converter profiles
+- [Service Usage](service-usage.md) - use in PHP code

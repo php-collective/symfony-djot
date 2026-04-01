@@ -25,18 +25,20 @@ class DjotExtensionTest extends TestCase
     {
         $filters = $this->extension->getFilters();
 
-        $this->assertCount(2, $filters);
+        $this->assertCount(3, $filters);
         $this->assertSame('djot', $filters[0]->getName());
-        $this->assertSame('djot_text', $filters[1]->getName());
+        $this->assertSame('djot_raw', $filters[1]->getName());
+        $this->assertSame('djot_text', $filters[2]->getName());
     }
 
     public function testGetFunctions(): void
     {
         $functions = $this->extension->getFunctions();
 
-        $this->assertCount(2, $functions);
+        $this->assertCount(3, $functions);
         $this->assertSame('djot', $functions[0]->getName());
-        $this->assertSame('djot_text', $functions[1]->getName());
+        $this->assertSame('djot_raw', $functions[1]->getName());
+        $this->assertSame('djot_text', $functions[2]->getName());
     }
 
     public function testToHtml(): void
@@ -51,6 +53,14 @@ class DjotExtensionTest extends TestCase
         $html = $this->extension->toHtml('Hello *world*!', 'safe');
 
         $this->assertStringContainsString('<strong>world</strong>', $html);
+    }
+
+    public function testToHtmlRaw(): void
+    {
+        // Test that djot_raw bypasses safe mode (allows javascript: links)
+        $html = $this->extension->toHtmlRaw('[Click](javascript:alert(1))');
+
+        $this->assertStringContainsString('href="javascript:alert(1)"', $html);
     }
 
     public function testToText(): void

@@ -16,7 +16,7 @@ class ConfigurationTest extends TestCase
 
         $this->assertArrayHasKey('converters', $config);
         $this->assertArrayHasKey('default', $config['converters']);
-        $this->assertFalse($config['converters']['default']['safe_mode']);
+        $this->assertTrue($config['converters']['default']['safe_mode']);
         $this->assertSame([], $config['converters']['default']['extensions']);
         $this->assertFalse($config['cache']['enabled']);
         $this->assertSame('cache.app', $config['cache']['pool']);

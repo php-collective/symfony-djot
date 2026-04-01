@@ -4,7 +4,7 @@
 
 ### `djot` Filter
 
-Converts Djot markup to HTML.
+Converts Djot markup to HTML. Safe mode is enabled by default, protecting against XSS.
 
 ```twig
 {{ article.body|djot }}
@@ -13,10 +13,21 @@ Converts Djot markup to HTML.
 With a specific converter profile:
 
 ```twig
-{{ comment.text|djot('user_content') }}
+{{ content|djot('docs') }}
 ```
 
 The filter is marked as safe for HTML output, so the result is not escaped.
+
+### `djot_raw` Filter
+
+Converts Djot markup to HTML *without* safe mode. Use only for trusted content.
+
+```twig
+{# Only use for content you fully control #}
+{{ trustedArticle.body|djot_raw }}
+```
+
+This filter bypasses XSS protection - dangerous URLs (`javascript:`, `data:`) and raw HTML blocks are preserved. Never use with user-generated content.
 
 ### `djot_text` Filter
 
@@ -32,7 +43,7 @@ Converts Djot markup to plain text. Useful for:
 ```
 
 ```twig
-{{ article.body|djot_text('user_content') }}
+{{ article.body|djot_text('docs') }}
 ```
 
 ## Functions
@@ -48,7 +59,14 @@ The same functionality is available as Twig functions:
 With a converter profile:
 
 ```twig
-{{ djot(userInput, 'user_content') }}
+{{ djot(content, 'docs') }}
+```
+
+### `djot_raw()` Function
+
+```twig
+{# Only for trusted content #}
+{{ djot_raw(trustedContent) }}
 ```
 
 ### `djot_text()` Function
@@ -82,16 +100,28 @@ With a converter profile:
 <p class="excerpt">{{ excerpt }}</p>
 ```
 
-### Safe User Content
+### User-Generated Content
 
-Always use a safe profile for user-generated content:
+The default `|djot` filter is safe for user content:
 
 ```twig
-{# SAFE: Uses safe mode #}
-{{ comment.text|djot('user_content') }}
-
-{# UNSAFE: Never do this with user input! #}
+{# Safe - XSS protection enabled by default #}
 {{ comment.text|djot }}
+
+{# Also safe - explicit converter #}
+{{ comment.text|djot('default') }}
+```
+
+### Trusted CMS Content
+
+For content from trusted sources (admin, editors):
+
+```twig
+{# Quick way - use djot_raw #}
+{{ article.body|djot_raw }}
+
+{# Or use a named converter with extensions #}
+{{ article.body|djot('docs') }}
 ```
 
 ### Inline Content
@@ -120,5 +150,5 @@ Note: This will wrap the content in `<p>` tags. If you need truly inline output,
 
 ## Next Steps
 
-- [Service Usage](service-usage.md) — use the converter in PHP code
-- [Safe Mode](safe-mode.md) — understand XSS protection
+- [Service Usage](service-usage.md) - use the converter in PHP code
+- [Safe Mode](safe-mode.md) - understand XSS protection

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpCollective\SymfonyDjot\Twig;
 
 use InvalidArgumentException;
+use PhpCollective\SymfonyDjot\Service\DjotConverter;
 use PhpCollective\SymfonyDjot\Service\DjotConverterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -12,6 +13,8 @@ use Twig\TwigFunction;
 
 class DjotExtension extends AbstractExtension
 {
+    private ?DjotConverterInterface $rawConverter = null;
+
     /**
      * @param array<string, \PhpCollective\SymfonyDjot\Service\DjotConverterInterface> $converters
      */
@@ -26,6 +29,7 @@ class DjotExtension extends AbstractExtension
     {
         return [
             new TwigFilter('djot', $this->toHtml(...), ['is_safe' => ['html']]),
+            new TwigFilter('djot_raw', $this->toHtmlRaw(...), ['is_safe' => ['html']]),
             new TwigFilter('djot_text', $this->toText(...)),
         ];
     }
@@ -37,6 +41,7 @@ class DjotExtension extends AbstractExtension
     {
         return [
             new TwigFunction('djot', $this->toHtml(...), ['is_safe' => ['html']]),
+            new TwigFunction('djot_raw', $this->toHtmlRaw(...), ['is_safe' => ['html']]),
             new TwigFunction('djot_text', $this->toText(...)),
         ];
     }
@@ -44,6 +49,14 @@ class DjotExtension extends AbstractExtension
     public function toHtml(string $djot, string $converter = 'default'): string
     {
         return $this->getConverter($converter)->toHtml($djot);
+    }
+
+    /**
+     * Convert Djot to HTML without safe mode (for trusted content only).
+     */
+    public function toHtmlRaw(string $djot): string
+    {
+        return $this->getRawConverter()->toHtml($djot);
     }
 
     public function toText(string $djot, string $converter = 'default'): string
@@ -62,5 +75,14 @@ class DjotExtension extends AbstractExtension
         }
 
         return $this->converters[$name];
+    }
+
+    private function getRawConverter(): DjotConverterInterface
+    {
+        if ($this->rawConverter === null) {
+            $this->rawConverter = new DjotConverter(safeMode: false);
+        }
+
+        return $this->rawConverter;
     }
 }

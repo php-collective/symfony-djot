@@ -20,8 +20,8 @@ class Configuration implements ConfigurationInterface
                     ->arrayPrototype()
                         ->children()
                             ->booleanNode('safe_mode')
-                                ->defaultFalse()
-                                ->info('Enable safe mode for XSS protection when processing untrusted input')
+                                ->defaultTrue()
+                                ->info('Enable safe mode for XSS protection (disable only for trusted content)')
                             ->end()
                             ->booleanNode('significant_newlines')
                                 ->defaultFalse()
@@ -191,7 +191,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->defaultValue([
                         'default' => [
-                            'safe_mode' => false,
+                            'safe_mode' => true,
                             'extensions' => [],
                         ],
                     ])

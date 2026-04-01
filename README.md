@@ -17,11 +17,11 @@ composer require php-collective/symfony-djot
 ### Twig Filter
 
 ```twig
-{# Filter syntax #}
+{# Safe by default - XSS protection enabled #}
 {{ article.body|djot }}
 
-{# Function syntax for inline strings #}
-{{ djot('_emphasis_ and *strong*') }}
+{# For trusted content only - no XSS protection #}
+{{ trustedContent|djot_raw }}
 
 {# Plain text output #}
 {{ article.body|djot_text }}
@@ -48,10 +48,12 @@ class ArticleController
 # config/packages/symfony_djot.yaml
 symfony_djot:
     converters:
-        default:
+        # Default has safe_mode: true (XSS protection enabled)
+        default: ~
+
+        # For trusted content (admin, CMS)
+        trusted:
             safe_mode: false
-        user_content:
-            safe_mode: true
     cache:
         enabled: false
         pool: cache.app
@@ -62,25 +64,36 @@ symfony_djot:
 Use different configurations for different contexts:
 
 ```twig
-{{ comment.body|djot('user_content') }}
+{# Default is safe #}
+{{ comment.body|djot }}
+
+{# Use named converter for trusted content #}
+{{ article.body|djot('trusted') }}
+
+{# Or use djot_raw for quick trusted rendering #}
+{{ article.body|djot_raw }}
 ```
 
 ```php
 public function __construct(
-    #[Autowire(service: 'symfony_djot.converter.user_content')]
-    private DjotConverterInterface $safeConverter,
+    // Default converter (safe mode enabled)
+    private DjotConverterInterface $djot,
+
+    // Trusted converter (safe mode disabled)
+    #[Autowire(service: 'symfony_djot.converter.trusted')]
+    private DjotConverterInterface $trusted,
 ) {}
 ```
 
 ### Safe Mode
 
-Enable safe mode when processing untrusted user input for XSS protection:
+Safe mode is *enabled by default* for XSS protection. Disable only for trusted content:
 
 ```yaml
 symfony_djot:
     converters:
-        user_content:
-            safe_mode: true
+        trusted:
+            safe_mode: false
 ```
 
 ### Extensions
