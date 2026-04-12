@@ -1,65 +1,41 @@
-# Symfony Djot Bundle
+---
+layout: home
 
-Djot markup language integration for Symfony applications.
+hero:
+  name: Symfony Djot
+  text: Djot for Symfony
+  tagline: Twig filters, services, forms, and validation for the Djot markup language
+  image:
+    src: /logo.svg
+    alt: Symfony Djot
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /guide/
+    - theme: alt
+      text: Extensions
+      link: /extensions/
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/php-collective/symfony-djot
 
-## What is Djot?
-
-[Djot](https://djot.net) is a modern light markup language created by John MacFarlane, the author of CommonMark and Pandoc. It builds on Markdown's foundation while addressing its complexity issues:
-
-- **Cleaner syntax** — more consistent rules, fewer edge cases
-- **More features** — footnotes, definition lists, task lists, math, highlights, and more
-- **Easier to parse** — simpler specification, faster implementations
-- **Better extensibility** — designed for customization
-
-## Features
-
-This bundle provides:
-
-- **Twig integration** — `|djot` filter and `djot()` function
-- **Service injection** — `DjotConverterInterface` for use in controllers and services
-- **Form type** — `DjotType` for form fields
-- **Validation** — `ValidDjot` constraint for input validation
-- **Multiple profiles** — different configurations for different contexts (e.g., user content vs. admin content)
-- **Safe mode** — XSS protection for untrusted input
-- **Caching** — optional caching of rendered output via Symfony cache pools
-- **Plain text** — extract plain text for search indexing or previews
-
-## Quick Start
-
-```bash
-composer require php-collective/symfony-djot
-```
-
-```twig
-{# In your templates #}
-{{ article.body|djot }}
-```
-
-```php
-// In your services
-public function __construct(
-    private DjotConverterInterface $djot,
-) {}
-
-public function render(string $content): string
-{
-    return $this->djot->toHtml($content);
-}
-```
-
-## Documentation
-
-- [Installation](installation.md)
-- [Configuration](configuration.md)
-- [Twig Usage](twig-usage.md)
-- [Service Usage](service-usage.md)
-- [Forms](forms.md)
-- [Validation](validation.md)
-- [Safe Mode](safe-mode.md)
-- [Caching](caching.md)
-- [Djot Syntax](djot-syntax.md)
-
-## Requirements
-
-- PHP 8.2 or higher
-- Symfony 6.4, 7.x, or 8.x
+features:
+  - icon: "\uD83C\uDF3F"
+    title: Twig Integration
+    details: "|djot filter and djot() function \u2014 render Djot markup directly in your Twig templates"
+  - icon: "\uD83D\uDD12"
+    title: Safe Mode
+    details: Built-in XSS protection enabled by default for untrusted user input
+  - icon: "\uD83C\uDFAD"
+    title: Multiple Profiles
+    details: Different converter configurations for different contexts (user content, admin, CMS)
+  - icon: "\uD83E\uDDE9"
+    title: Extensible
+    details: 17 built-in extensions \u2014 autolink, mentions, TOC, heading permalinks, and more
+  - icon: "\uD83D\uDCDD"
+    title: Forms & Validation
+    details: DjotType form field and ValidDjot constraint for form integration and input validation
+  - icon: "\u26A1"
+    title: Caching
+    details: Optional output caching via Symfony cache pools for better performance
+---
