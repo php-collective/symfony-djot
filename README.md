@@ -136,7 +136,7 @@ Available extensions:
 - `tabs` - Tabbed content blocks (CSS or ARIA mode)
 - `wikilinks` - Support `[[Page Name]]` wiki-style links
 
-See [Extensions documentation](docs/extensions.md) for detailed configuration options.
+See [Extensions documentation](https://php-collective.github.io/symfony-djot/extensions/) for detailed configuration options.
 
 ### Form Type
 
@@ -164,18 +164,22 @@ class Article
 
 ## Documentation
 
-See the [docs/](docs/) folder for detailed documentation:
+Full documentation: **[php-collective.github.io/symfony-djot](https://php-collective.github.io/symfony-djot/)**
 
-- [Installation](docs/installation.md)
-- [Configuration](docs/configuration.md)
-- [Twig Usage](docs/twig-usage.md)
-- [Service Usage](docs/service-usage.md)
-- [Forms](docs/forms.md)
-- [Validation](docs/validation.md)
-- [Safe Mode](docs/safe-mode.md)
-- [Extensions](docs/extensions.md)
-- [Caching](docs/caching.md)
-- [Djot Syntax](docs/djot-syntax.md)
+- [Installation](https://php-collective.github.io/symfony-djot/guide/installation)
+- [Configuration](https://php-collective.github.io/symfony-djot/guide/configuration)
+- [Twig Usage](https://php-collective.github.io/symfony-djot/guide/twig-usage)
+- [Service Usage](https://php-collective.github.io/symfony-djot/guide/service-usage)
+- [Forms](https://php-collective.github.io/symfony-djot/guide/forms)
+- [Validation](https://php-collective.github.io/symfony-djot/guide/validation)
+- [Safe Mode](https://php-collective.github.io/symfony-djot/guide/safe-mode)
+- [Extensions](https://php-collective.github.io/symfony-djot/extensions/)
+- [Caching](https://php-collective.github.io/symfony-djot/guide/caching)
+- [Djot Syntax](https://php-collective.github.io/symfony-djot/guide/djot-syntax)
+
+## Demo Application
+
+See the [symfony-djot-demo](https://github.com/php-collective/symfony-djot-demo) for a complete example application.
 
 ## What is Djot?
 
