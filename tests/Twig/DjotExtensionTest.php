@@ -57,10 +57,11 @@ class DjotExtensionTest extends TestCase
 
     public function testToHtmlRaw(): void
     {
-        // Test that djot_raw bypasses safe mode (allows javascript: links)
-        $html = $this->extension->toHtmlRaw('[Click](javascript:alert(1))');
+        // djot_raw bypasses safe mode, so raw HTML passes through. Dangerous URL schemes are
+        // blanked by djot itself in every mode, so they cannot demonstrate the bypass.
+        $html = $this->extension->toHtmlRaw('`<b>raw</b>`{=html}');
 
-        $this->assertStringContainsString('href="javascript:alert(1)"', $html);
+        $this->assertStringContainsString('<b>raw</b>', $html);
     }
 
     public function testToText(): void
